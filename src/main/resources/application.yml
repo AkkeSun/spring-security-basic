@@ -2,7 +2,11 @@ server:
   port: 8090
 
 spring:
-  security:
-    user:
-      name: user
-      password: 1234
+  datasource:
+    url: jdbc:mysql://root@localhost:3306/local_test?serverTimezone=UTC
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
