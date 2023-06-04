@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomAuthenticationDetailsSource authenticationDetailsSource;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -56,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          **************************************/
         http
             .formLogin()                        // form 로그인 사용
+            .authenticationDetailsSource(authenticationDetailsSource) // 커스텀 입력필드 설정
             .loginPage("/loginPage")            // 커스텀 로그인 페이지 url
             .defaultSuccessUrl("/loginSuccess") // 로그인 성공시 이동할 url
             .failureForwardUrl("/loginFailed")  // 로그인 실패시 이동할 url (POST 요청)
@@ -63,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordParameter("password")      // 로그인 패스워드 파라미터명 (default = password)
             .loginProcessingUrl("/login-process") // 로그인 프로세싱 POST url (default = /login) : 해당 경로를 POST 요청하면 로그인을 처리할 수 있다.
 
-            // 로그인 성공시 실행되는 핸들러
+        // 로그인 성공시 실행되는 핸들러
             /*
             .successHandler(new AuthenticationSuccessHandler() {
                 @Override
