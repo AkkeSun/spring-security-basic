@@ -29,8 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAuthenticationDetailsSource authenticationDetailsSource;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(customAuthenticationProvider());
     }
 
     @Override
@@ -182,5 +182,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()) //기본 설정된 모든 정적파일들
             .antMatchers("/favicon.ico", "/resources/**");
+    }
+
+    @Bean
+    public CustomAuthenticationProvider customAuthenticationProvider(){
+        return new CustomAuthenticationProvider(userDetailsService, passwordEncoder);
     }
 }
