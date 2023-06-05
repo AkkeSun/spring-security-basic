@@ -5,7 +5,7 @@
   <div class="row">
     <div class="col-md-10 text-center login-form">
       <br>
-      <form action="/login-process" method="post">
+      <form action="/customLogin" method="post">
         <div class="form-group">
           <input type="text" class="form-control" name="username" id="username" placeholder="username" required="required"
                  autofocus="autofocus">
@@ -19,7 +19,18 @@
         <div class="form-group">
           <input type="text" class="form-control" name="snsSecretKey" id="snsSecretKey"  placeholder="snsSecretKey">
         </div>
-        <button type="submit" class="btn btn-lg btn-primary btn-block">LOGIN</button>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">CUSTOM LOGIN</button>
+      </form>
+
+      <form action="/login-process" method="post">
+        <div class="form-group">
+          <input type="text" class="form-control" name="username" placeholder="username" required="required"
+                 autofocus="autofocus">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" name="password"  placeholder="password" required="required">
+        </div>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">DEFAULT LOGIN</button>
       </form>
     </div>
   </div>
