@@ -19,4 +19,9 @@ public class TestController {
         return "loginFailed";
     }
 
+    @GetMapping("/loginFailed")
+    public String loginFailed2(){
+        return "loginFailed";
+    }
+
 }
