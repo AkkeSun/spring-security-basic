@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+@Order(0)
 @Configuration
 @EnableWebSecurity // 웹 보안 활성화
 @RequiredArgsConstructor
@@ -29,8 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAuthenticationDetailsSource authenticationDetailsSource;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(customAuthenticationProvider());
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+       // auth.authenticationProvider(customAuthenticationProvider());
     }
 
     @Override
@@ -42,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             // 순서 : 1. 전체 허용, 2. 아래로 갈수록 권한이 넓어지도록 설정
             .authorizeRequests()
-            .antMatchers("/loginPage", "/login-process", "/loginFailed").permitAll()
+            .antMatchers("/loginPage", "/login-process", "/loginFailed", "/customLogin").permitAll()
             .antMatchers("/test1/user").hasRole("USER")
             .antMatchers("/test1/admin/pay").hasRole("ADMIN")
             .antMatchers("/test1/admin/**").access("hasRole('ADMIN') or hasRole('SYS')")
@@ -57,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          **************************************/
         http
             .formLogin()                        // form 로그인 사용
-            .authenticationDetailsSource(authenticationDetailsSource) // 커스텀 입력필드 설정
+            //.authenticationDetailsSource(authenticationDetailsSource) // 커스텀 입력필드 설정
             .loginPage("/loginPage")            // 커스텀 로그인 페이지 url
             .defaultSuccessUrl("/loginSuccess") // 로그인 성공시 이동할 url
             .failureForwardUrl("/loginFailed")  // 로그인 실패시 이동할 url (POST 요청)
