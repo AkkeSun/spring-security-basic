@@ -30,6 +30,9 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        http.cors()
+            .and()
+            .csrf().disable();
         /*
             커스텀 필터를 사용하는 경우 CustomAuthenticationDetails 를 통해 추가적인 필드를 받는 경우
             커스텀 필터 내에서 CustomAuthenticationDetailsSource 를 통해 직접 추가 필드를 처리해주기 때문에
